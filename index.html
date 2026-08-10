@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Yuk Kenal Huruf Hijaiyah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       CSS VARIABLES & TOKEN
+       ============================================= */
+    :root {
+      --primary: #0E6655;
+      --primary-light: #148F77;
+      --primary-dark: #0A4F40;
+      --accent: #C9A84C;
+      --accent-light: #D4BA6A;
+      --accent-dark: #B08E35;
+      --bg: #FDF8F0;
+      --bg-warm: #F5EDE0;
+      --surface: #FFFFFF;
+      --text: #1A1A2E;
+      --text-secondary: #5D6D7E;
+      --text-muted: #95A5A6;
+      --border: #E8E0D4;
+      --border-light: #F0EBE3;
+      --success: #27AE60;
+      --success-bg: #E8F8F0;
+      --error: #C0392B;
+      --error-bg: #FDEDEC;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-arabic: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .arabic {
+      font-family: var(--font-arabic);
+      direction: rtl;
+      unicode-bidi: isolate;
+    }
+
+    /* =============================================
+       PAGE SYSTEM
+       ============================================= */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: flex; flex-direction: column; animation: pageIn 0.35s ease; }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =============================================
+       TOP BAR (Navigasi kembali)
+       ============================================= */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .btn-back {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-family: var(--font-ui);
+      font-size: 0.938rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 2px;
+      transition: opacity 0.2s;
+    }
+    .btn-back:active { opacity: 0.6; }
+    .btn-back svg { width: 20px; height: 20px; }
+    .top-bar-title {
+      font-size: 1.063rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* =============================================
+       BUTTONS
+       ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-ui);
+      font-weight: 600;
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      line-height: 1.4;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover { background: var(--primary-light); border-color: var(--primary-light); }
+    .btn-accent {
+      background: var(--accent);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .btn-accent:hover { background: var(--accent-light); border-color: var(--accent-light); }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border-color: var(--border);
+    }
+    .btn-outline:hover { border-color: var(--primary); background: rgba(14,102,85,0.04); }
+    .btn-danger-outline {
+      background: transparent;
+      color: var(--error);
+      border-color: var(--error);
+    }
+    .btn-danger-outline:hover { background: var(--error-bg); }
+    .btn-danger {
+      background: var(--error);
+      color: #fff;
+      border-color: var(--error);
+    }
+    .btn-secondary {
+      background: var(--bg-warm);
+      color: var(--text-secondary);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover { background: var(--border); }
+    .btn-sm { padding: 8px 14px; font-size: 0.813rem; border-radius: 8px; }
+    .btn-lg { padding: 16px 28px; font-size: 1.063rem; border-radius: var(--radius); min-height: 56px; }
+    .btn-block { width: 100%; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* =============================================
+       HOME PAGE
+       ============================================= */
+    .home-header {
+      background: linear-gradient(155deg, var(--primary-dark) 0%, var(--primary) 55%, var(--primary-light) 100%);
+      padding: 48px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Efek cahaya dekoratif */
+    .home-header::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      right: -20%;
+      width: 70%;
+      height: 180%;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .home-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: var(--bg);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    /* Logo bulan sabit & bintang */
+    .logo-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .crescent {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      box-shadow: 10px -4px 0 0 var(--accent);
+    }
+    .logo-star {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 1;
+    }
+    .home-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      position: relative;
+      line-height: 1.3;
+    }
+    .home-subtitle {
+      font-size: 0.938rem;
+      color: rgba(255,255,255,0.78);
+      font-weight: 400;
+      position: relative;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    /* Ornamen pemisah */
+    .divider-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 28px 0 8px;
+    }
+    .divider-ornament::before,
+    .divider-ornament::after {
+      content: '';
+      height: 1px;
+      width: 50px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.5;
+    }
+    .divider-diamond {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      transform: rotate(45deg);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* Menu buttons */
+    .home-menu {
+      padding: 8px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Ornamen bawah */
+    .home-footer-ornament {
+      margin-top: auto;
+      padding: 24px;
+      text-align: center;
+      opacity: 0.3;
+    }
+    .home-footer-ornament .arabic {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      letter-spacing: 8px;
+    }
+
+    /* =============================================
+       BELAJAR PAGE
+       ============================================= */
+    .belajar-content {
+      padding: 20px;
+      flex: 1;
+    }
+    .belajar-intro {
+      text-align: center;
+      padding: 8px 0 20px;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    .letters-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .letter-card {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: cardIn 0.4s ease backwards;
+      box-shadow: var(--shadow-sm);
+    }
+    .letter-card:active {
+      transform: scale(0.94);
+      border-color: var(--primary);
+    }
+    .letter-card .arabic-letter {
+      font-family: var(--font-arabic);
+      font-size: 1.75rem;
+      color: var(--primary-dark);
+      line-height: 1.2;
+    }
+    .letter-card .letter-name {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .belajar-action {
+      padding: 24px;
+      max-width: 400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* =============================================
+       DETAIL HURUF PAGE
+       ============================================= */
+    .detail-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+    }
+    .detail-card {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      width: 100%;
+      max-width: 340px;
+      border: 1px solid var(--border-light);
+      animation: detailIn 0.4s ease;
+    }
+    @keyframes detailIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .detail-letter {
+      font-family: var(--font-arabic);
+      font-size: 7rem;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      direction: rtl;
+    }
+    .detail-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .detail-pron {
+      display: inline-block;
+      background: var(--bg-warm);
+      color: var(--text-secondary);
+      font-size: 0.938rem;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* =============================================
+       LATIHAN / QUIZ PAGE
+       ============================================= */
+    .quiz-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .question-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-light);
+      margin-bottom: 24px;
+    }
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .question-difficulty {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .diff-mudah { background: #E8F8F0; color: #27AE60; }
+    .diff-sedang { background: #FEF5E7; color: #D4A843; }
+    .diff-sulit { background: #FDEDEC; color: #C0392B; }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .option-btn {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-arabic);
+      font-size: 2.8rem;
+      color: var(--primary-dark);
+      background: var(--surface);
+      border: 2.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      direction: rtl;
+      -webkit-user-select: none;
+      user-select: none;
+      min-height: 90px;
+    }
+    .option-btn:not(.correct):not(.wrong):active {
+      transform: scale(0.95);
+      border-color: var(--primary-light);
+      background: rgba(14,102,85,0.03);
+    }
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: var(--success);
+      animation: correctPulse 0.5s ease;
+    }
+    .option-btn.wrong {
+      border-color: var(--error);
+      background: var(--error-bg);
+      color: var(--error);
+      animation: wrongShake 0.45s ease;
+    }
+    .option-btn.reveal {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: var(--success);
+    }
+    .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+    @keyframes correctPulse {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    @keyframes wrongShake {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-7px); }
+      30% { transform: translateX(7px); }
+      50% { transform: translateX(-5px); }
+      70% { transform: translateX(5px); }
+      85% { transform: translateX(-2px); }
+    }
+
+    .feedback-area {
+      text-align: center;
+      padding: 8px 0 20px;
+      animation: fadeUp 0.3s ease;
+    }
+    .feedback-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .feedback-correct { color: var(--success); }
+    .feedback-wrong { color: var(--error); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =============================================
+       KELOLA SOAL PAGE
+       ============================================= */
+    .kelola-content {
+      padding: 20px;
+      flex: 1;
+    }
+    .kelola-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .kelola-actions .btn { flex: 1; min-width: 140px; }
+    .questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .q-item {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+    }
+    .q-item:hover { box-shadow: var(--shadow); }
+    .q-item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .q-item-text {
+      font-size: 0.938rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .q-item-badges {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .badge {
+      font-size: 0.688rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-mudah { background: #E8F8F0; color: #27AE60; }
+    .badge-sedang { background: #FEF5E7; color: #D4A843; }
+    .badge-sulit { background: #FDEDEC; color: #C0392B; }
+    .badge-category {
+      background: rgba(14,102,85,0.08);
+      color: var(--primary);
+    }
+    .q-item-answers {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .q-answer-chip {
+      font-family: var(--font-arabic);
+      font-size: 1.1rem;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: var(--bg);
+      direction: rtl;
+    }
+    .q-answer-chip.is-correct {
+      background: var(--success-bg);
+      color: var(--success);
+      font-weight: 700;
+    }
+    .q-item-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+    .empty-state p { font-size: 0.938rem; margin-bottom: 16px; }
+
+    /* =============================================
+       FORM SOAL PAGE
+       ============================================= */
+    .form-content {
+      padding: 20px;
+      flex: 1;
+    }
+    .form-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-light);
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.813rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: var(--font-ui);
+      font-size: 0.938rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      transition: border-color 0.2s;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+    }
+    .form-input.arabic-input {
+      font-family: var(--font-arabic);
+      font-size: 1.5rem;
+      text-align: center;
+      direction: rtl;
+      padding: 14px;
+    }
+    .form-input.input-error { border-color: var(--error); }
+    .form-error {
+      font-size: 0.75rem;
+      color: var(--error);
+      margin-top: 4px;
+      display: none;
+    }
+    .form-error.show { display: block; }
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%235D6D7E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .form-actions .btn { flex: 1; }
+
+    /* =============================================
+       MODAL
+       ============================================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 24px;
+      animation: modalBgIn 0.2s ease;
+    }
+    .modal-overlay.show { display: flex; }
+    @keyframes modalBgIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-message {
+      font-size: 0.938rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .modal-actions .btn { flex: 1; }
+
+    /* =============================================
+       TOAST
+       ============================================= */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 300;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.toast-success { background: var(--success); }
+    .toast.toast-error { background: var(--error); }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 400px) {
+      .letters-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .letter-card .arabic-letter { font-size: 1.5rem; }
+      .option-btn { font-size: 2.4rem; min-height: 80px; }
+      .home-title { font-size: 1.5rem; }
+      .detail-letter { font-size: 5.5rem; }
+    }
+    @media (min-width: 500px) {
+      .letters-grid { gap: 14px; }
+      .letter-card .arabic-letter { font-size: 2rem; }
+      .option-btn { font-size: 3.2rem; min-height: 100px; }
+    }
+    @media (min-width: 768px) {
+      .home-header { padding: 64px 40px 88px; }
+      .home-title { font-size: 2.25rem; }
+      .home-menu { max-width: 440px; }
+      .letters-grid { grid-template-columns: repeat(7, 1fr); max-width: 560px; }
+      .quiz-content { max-width: 520px; }
+      .kelola-content { max-width: 640px; margin: 0 auto; }
+      .form-content { max-width: 520px; margin: 0 auto; }
+    }
+
+    /* =============================================
+       REDUCED MOTION
+       ============================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       PAGE: BERANDA
+       ============================================= -->
+  <section id="page-home" class="page active" role="main">
+    <header class="home-header">
+      <div class="logo-icon" aria-hidden="true">
+        <div class="crescent"></div>
+        <span class="logo-star">✦</span>
+      </div>
+      <h1 class="home-title">Yuk Kenal Huruf Hijaiyah</h1>
+      <p class="home-subtitle">Belajar huruf Hijaiyah dengan cara menyenangkan</p>
+    </header>
+
+    <div class="divider-ornament" aria-hidden="true">
+      <span class="divider-diamond"></span>
+    </div>
+
+    <nav class="home-menu" aria-label="Menu utama">
+      <button class="btn btn-primary btn-lg btn-block" onclick="navigateTo('page-belajar')">
+        Mulai Belajar
+      </button>
+      <button class="btn btn-accent btn-lg btn-block" onclick="startQuiz()">
+        Latihan
+      </button>
+      <button class="btn btn-outline btn-lg btn-block" onclick="navigateTo('page-kelola')">
+        Kelola Soal
+      </button>
+    </nav>
+
+    <div class="home-footer-ornament" aria-hidden="true">
+      <span class="arabic">بِسْمِ اللَّهِ</span>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PAGE: BELAJAR
+       ============================================= -->
+  <section id="page-belajar" class="page">
+    <div class="top-bar">
+      <button class="btn-back" onclick="navigateTo('page-home')" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Kembali
+      </button>
+      <span class="top-bar-title">Belajar Huruf</span>
+    </div>
+    <div class="belajar-content">
+      <p class="belajar-intro">Tap huruf untuk melihat detail</p>
+      <div class="letters-grid" id="letters-grid" role="list"></div>
+    </div>
+    <div class="belajar-action">
+      <button class="btn btn-accent btn-lg btn-block" onclick="startQuiz()">Coba Latihan</button>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PAGE: DETAIL HURUF
+       ============================================= -->
+  <section id="page-detail" class="page">
+    <div class="top-bar">
+      <button class="btn-back" onclick="navigateTo('page-belajar')" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Kembali
+      </button>
+      <span class="top-bar-title">Detail Huruf</span>
+    </div>
+    <div class="detail-content">
+      <div class="detail-card">
+        <div class="detail-letter arabic" id="detail-letter"></div>
+        <div class="detail-name" id="detail-name"></div>
+        <div class="detail-pron" id="detail-pron"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PAGE: LATIHAN / QUIZ
+       ============================================= -->
+  <section id="page-latihan" class="page">
+    <div class="top-bar">
+      <button class="btn-back" onclick="navigateTo('page-home')" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Kembali
+      </button>
+      <span class="top-bar-title">Latihan</span>
+    </div>
+    <div class="quiz-content">
+      <div class="question-card">
+        <p class="question-text" id="question-text"></p>
+        <span class="question-difficulty" id="question-difficulty"></span>
+      </div>
+      <div class="options-grid" id="options-grid"></div>
+      <div class="feedback-area" id="feedback-area" style="display:none">
+        <p class="feedback-text" id="feedback-text"></p>
+        <button class="btn btn-primary btn-lg btn-block" id="btn-next" onclick="nextQuestion()">Lanjut</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PAGE: KELOLA SOAL
+       ============================================= -->
+  <section id="page-kelola" class="page">
+    <div class="top-bar">
+      <button class="btn-back" onclick="navigateTo('page-home')" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Kembali
+      </button>
+      <span class="top-bar-title">Kelola Soal</span>
+    </div>
+    <div class="kelola-content">
+      <div class="kelola-actions">
+        <button class="btn btn-primary btn-sm" onclick="openForm()">+ Tambah Soal</button>
+        <button class="btn btn-danger-outline btn-sm" onclick="resetToDefault()">Kembalikan Soal Bawaan</button>
+      </div>
+      <div class="questions-list" id="questions-list"></div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PAGE: FORM SOAL (Tambah / Edit)
+       ============================================= -->
+  <section id="page-form" class="page">
+    <div class="top-bar">
+      <button class="btn-back" onclick="navigateTo('page-kelola')" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Kembali
+      </button>
+      <span class="top-bar-title" id="form-title">Tambah Soal Baru</span>
+    </div>
+    <div class="form-content">
+      <div class="form-card">
+        <form id="question-form" onsubmit="return false;" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="f-question">Pertanyaan</label>
+            <input class="form-input" id="f-question" type="text" placeholder="Contoh: Manakah huruf Ba?" autocomplete="off">
+            <p class="form-error" id="err-question"></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-correct">Jawaban Benar (huruf Arab)</label>
+            <input class="form-input arabic-input" id="f-correct" type="text" placeholder="ب" autocomplete="off" inputmode="text">
+            <p class="form-error" id="err-correct"></p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-wrong1">Jawaban Salah 1</label>
+              <input class="form-input arabic-input" id="f-wrong1" type="text" placeholder="ت" autocomplete="off" inputmode="text">
+              <p class="form-error" id="err-wrong1"></p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-wrong2">Jawaban Salah 2</label>
+              <input class="form-input arabic-input" id="f-wrong2" type="text" placeholder="ث" autocomplete="off" inputmode="text">
+              <p class="form-error" id="err-wrong2"></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-wrong3">Jawaban Salah 3</label>
+            <input class="form-input arabic-input" id="f-wrong3" type="text" placeholder="ج" autocomplete="off" inputmode="text" style="max-width:200px;">
+            <p class="form-error" id="err-wrong3"></p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-category">Kategori Materi</label>
+              <input class="form-input" id="f-category" type="text" placeholder="Huruf Hijaiyah" autocomplete="off">
+              <p class="form-error" id="err-category"></p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-difficulty">Tingkat Kesulitan</label>
+              <select class="form-select" id="f-difficulty">
+                <option value="">-- Pilih --</option>
+                <option value="mudah">Mudah</option>
+                <option value="sedang">Sedang</option>
+                <option value="sulit">Sulit</option>
+              </select>
+              <p class="form-error" id="err-difficulty"></p>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary btn-lg" onclick="navigateTo('page-kelola')">Batal</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="saveForm()">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       MODAL KONFIRMASI
+       ============================================= -->
+  <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <p class="modal-message" id="modal-message"></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary btn-sm" onclick="closeModal()">Batal</button>
+        <button class="btn btn-danger btn-sm" id="modal-confirm-btn" onclick="confirmModal()">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       TOAST NOTIFICATION
+       ============================================= -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script>
+    /* ================================================================
+       DATA HURUF HIJAIYAH
+       29 huruf dengan nama, pengucapan, dan kelompok kemiripan.
+       Kelompok digunakan untuk menghasilkan pilihan jawaban yang
+       menantang sesuai tingkat kesulitan.
+       ================================================================ */
+    const HIJAIYAH_LETTERS = [
+      { arabic: 'ا', name: 'Alif',   pronunciation: 'a',    group: 'alif' },
+      { arabic: 'ب', name: 'Ba',     pronunciation: 'ba',   group: 'batha' },
+      { arabic: 'ت', name: 'Ta',     pronunciation: 'ta',   group: 'batha' },
+      { arabic: 'ث', name: 'Tsa',    pronunciation: 'tsa',  group: 'batha' },
+      { arabic: 'ج', name: 'Jim',    pronunciation: 'jim',  group: 'jimkhah' },
+      { arabic: 'ح', name: 'Ha',     pronunciation: 'ha',   group: 'jimkhah' },
+      { arabic: 'خ', name: 'Kha',    pronunciation: 'kha',  group: 'jimkhah' },
+      { arabic: 'د', name: 'Dal',    pronunciation: 'dal',  group: 'daldzal' },
+      { arabic: 'ذ', name: 'Dzal',   pronunciation: 'dzal', group: 'daldzal' },
+      { arabic: 'ر', name: 'Ra',     pronunciation: 'ra',   group: 'razai' },
+      { arabic: 'ز', name: 'Zai',    pronunciation: 'zai',  group: 'razai' },
+      { arabic: 'س', name: 'Sin',    pronunciation: 'sin',  group: 'sinshin' },
+      { arabic: 'ش', name: 'Syin',   pronunciation: 'syin', group: 'sinshin' },
+      { arabic: 'ص', name: 'Shad',   pronunciation: 'shad', group: 'shaddhod' },
+      { arabic: 'ض', name: 'Dhod',   pronunciation: 'dhod', group: 'shaddhod' },
+      { arabic: 'ط', name: 'Tha',    pronunciation: 'tha',  group: 'thadzha' },
+      { arabic: 'ظ', name: 'Dzha',   pronunciation: 'dzha', group: 'thadzha' },
+      { arabic: 'ع', name: 'Ain',    pronunciation: 'ain',  group: 'ainghain' },
+      { arabic: 'غ', name: 'Ghain',  pronunciation: 'ghain',group: 'ainghain' },
+      { arabic: 'ف', name: 'Fa',     pronunciation: 'fa',   group: 'faqaf' },
+      { arabic: 'ق', name: 'Qaf',    pronunciation: 'qaf',  group: 'faqaf' },
+      { arabic: 'ك', name: 'Kaf',    pronunciation: 'kaf',  group: 'kaf' },
+      { arabic: 'ل', name: 'Lam',    pronunciation: 'lam',  group: 'lam' },
+      { arabic: 'م', name: 'Mim',    pronunciation: 'mim',  group: 'mim' },
+      { arabic: 'ن', name: 'Nun',    pronunciation: 'nun',  group: 'nunya' },
+      { arabic: 'ه', name: 'Ha',     pronunciation: 'ha',   group: 'ha2' },
+      { arabic: 'و', name: 'Wau',    pronunciation: 'wau',  group: 'wau' },
+      { arabic: 'ي', name: 'Ya',     pronunciation: 'ya',   group: 'nunya' },
+      { arabic: 'ء', name: 'Hamzah', pronunciation: 'hamzah',group: 'hamzah' },
+    ];
+
+    /* ================================================================
+       KELOMPOK HURUF YANG BENTUKNYA MIRIP
+       Digunakan untuk menyusun pilihan jawaban sulit.
+       ================================================================ */
+    const SIMILAR_GROUPS = {
+      'batha':   ['ب', 'ت', 'ث'],
+      'jimkhah': ['ج', 'ح', 'خ'],
+      'daldzal': ['د', 'ذ'],
+      'razai':   ['ر', 'ز'],
+      'sinshin': ['س', 'ش'],
+      'shaddhod':['ص', 'ض'],
+      'thadzha': ['ط', 'ظ'],
+      'ainghain':['ع', 'غ'],
+      'faqaf':   ['ف', 'ق'],
+      'nunya':   ['ن', 'ي'],
+    };
+
+    /* Huruf yang tidak punya kelompok mirip ketat,
+       tapi punya beberapa huruf yang agak mirip untuk soal sedang. */
+    const EXTRA_SIMILAR = {
+      'ا': ['ل'],
+      'ك': ['ل'],
+      'ل': ['ا', 'ك'],
+      'م': ['و'],
+      'ه': ['ح'],
+      'و': ['م'],
+      'ء': ['ع'],
+    };
+
+    /* ================================================================
+       TEMPLATE PERTANYAAN (dalam Bahasa Indonesia)
+       {name} akan diganti dengan nama huruf.
+       ================================================================ */
+    const QUESTION_TEMPLATES = [
+      'Manakah huruf {name}?',
+      'Pilih huruf {name}.',
+      'Yang manakah huruf {name}?',
+      'Temukan huruf {name}.',
+      'Tunjukkan huruf {name}!',
+      'Huruf {name} ditunjukkan oleh...',
+    ];
+
+    /* ================================================================
+       PEMBANGKIT SOAL BAWAAN
+       Menghasilkan 2 soal per huruf (1 mudah, 1 sedang/sulit)
+       secara deterministik agar hasilnya selalu sama.
+       ================================================================ */
+    function generateDefaultQuestions() {
+      const questions = [];
+      let id = 1;
+
+      HIJAIYAH_LETTERS.forEach((letter, idx) => {
+        const tightGroup = SIMILAR_GROUPS[letter.group] || [];
+        const sameGroup = tightGroup.filter(l => l !== letter.arabic);
+
+        /* Huruf lain yang TIDAK berada di kelompok mirip yang sama */
+        const otherArabic = HIJAIYAH_LETTERS
+          .filter(l => l.arabic !== letter.arabic && !tightGroup.includes(l.arabic))
+          .map(l => l.arabic);
+
+        /* ---- SOAL KE-1: MUDAH ---- */
+        /* Ambil 3 huruf yang sangat berbeda bentuknya */
+        const easyWrong = pickUnique(otherArabic, [
+          idx % otherArabic.length,
+          (idx * 7 + 3) % otherArabic.length,
+          (idx * 11 + 5) % otherArabic.length,
+        ]);
+
+        questions.push({
+          id: 'default-' + (id++),
+          type: 'recognize-letter',
+          category: 'huruf-hijaiyah',
+          question: QUESTION_TEMPLATES[idx % QUESTION_TEMPLATES.length]
+            .replace('{name}', letter.name),
+          correctAnswer: letter.arabic,
+          wrongAnswers: easyWrong,
+          difficulty: 'mudah',
+          material: 'Huruf Hijaiyah',
+        });
+
+        /* ---- SOAL KE-2: SEDANG / SULIT ---- */
+        let medWrong = [];
+        let diff = 'sedang';
+
+        if (sameGroup.length >= 2) {
+          /* Cukup huruf mirip → sulit */
+          medWrong = sameGroup.slice(0, 2);
+          /* Tambah 1 dari huruf lain */
+          const extra = EXTRA_SIMILAR[letter.arabic] || [];
+          const extraAvail = extra.filter(e => !medWrong.includes(e) && e !== letter.arabic);
+          if (extraAvail.length > 0) {
+            medWrong.push(extraAvail[0]);
+          } else {
+            medWrong.push(otherArabic[(idx + 17) % otherArabic.length]);
+          }
+          diff = 'sulit';
+        } else if (sameGroup.length === 1) {
+          /* Ada 1 huruf mirip → sedang */
+          medWrong.push(sameGroup[0]);
+          const extra = EXTRA_SIMILAR[letter.arabic] || [];
+          const extraAvail = extra.filter(e => !medWrong.includes(e) && e !== letter.arabic);
+          if (extraAvail.length > 0) medWrong.push(extraAvail[0]);
+          while (medWrong.length < 3) {
+            const c = otherArabic[(idx + medWrong.length + 9) % otherArabic.length];
+            if (!medWrong.includes(c)) medWrong.push(c);
+          }
+          diff = 'sedang';
+        } else {
+          /* Tidak ada kelompok mirip → sedang dengan extra similar */
+          const extra = EXTRA_SIMILAR[letter.arabic] || [];
+          const extraAvail = extra.filter(e => e !== letter.arabic);
+          medWrong = extraAvail.slice();
+          while (medWrong.length < 3) {
+            const c = otherArabic[(idx + medWrong.length + 13) % otherArabic.length];
+            if (!medWrong.includes(c)) medWrong.push(c);
+          }
+          diff = 'sedang';
+        }
+
+        questions.push({
+          id: 'default-' + (id++),
+          type: 'recognize-letter',
+          category: 'huruf-hijaiyah',
+          question: QUESTION_TEMPLATES[(idx + 3) % QUESTION_TEMPLATES.length]
+            .replace('{name}', letter.name),
+          correctAnswer: letter.arabic,
+          wrongAnswers: medWrong,
+          difficulty: diff,
+          material: 'Huruf Hijaiyah',
+        });
+      });
+
+      return questions;
+    }
+    
+        /* ================================================================
+       HELPER FUNCTIONS
+       ================================================================ */
+
+    /* Mengambil elemen unik dari array berdasarkan indeks */
+    function pickUnique(arr, indices) {
+      const result = [];
+      const seen = new Set();
+      for (const i of indices) {
+        const safeIdx = ((i % arr.length) + arr.length) % arr.length;
+        if (!seen.has(safeIdx)) {
+          seen.add(safeIdx);
+          result.push(arr[safeIdx]);
+        }
+      }
+      /* Jika belum cukup, ambil dari index lain */
+      let fallback = 0;
+      while (result.length < 3 && fallback < arr.length) {
+        if (!seen.has(fallback)) {
+          result.push(arr[fallback]);
+          seen.add(fallback);
+        }
+        fallback++;
+      }
+      return result.slice(0, 3);
+    }
+
+    /* Mengacak urutan array (Fisher-Yates) */
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /* Memilih 1 elemen acak dari array */
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    /* Membuat ID unik sederhana */
+    function generateId() {
+      return 'q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+    }
+
+    /* ================================================================
+       LOCALSTORAGE - PENYIMPANAN DATA SOAL
+       Semua soal disimpan di localStorage agar persisten.
+       ================================================================ */
+    const STORAGE_KEY = 'hijaiyah_questions_v1';
+
+    /* Memuat soal dari localStorage, atau gunakan soal bawaan jika belum ada */
+    function loadQuestions() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) {
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('Gagal memuat soal dari localStorage:', e);
+      }
+      /* Pertama kali: simpan soal bawaan */
+      const defaults = generateDefaultQuestions();
+      saveQuestions(defaults);
+      return defaults;
+    }
+
+    /* Menyimpan soal ke localStorage */
+    function saveQuestions(questions) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
+      } catch (e) {
+        console.error('Gagal menyimpan soal:', e);
+        showToast('Gagal menyimpan data. Penyimpanan penuh.', 'error');
+      }
+    }
+
+    /* Reset soal ke bawaan */
+    function resetToDefault() {
+      showConfirmModal(
+        'Semua soal akan dikembalikan ke soal bawaan (29 huruf Hijaiyah). Soal yang sudah ditambahkan secara manual akan hilang. Lanjutkan?',
+        'Kembalikan',
+        function () {
+          const defaults = generateDefaultQuestions();
+          saveQuestions(defaults);
+          renderQuestionsList();
+          showToast('Soal bawaan berhasil dikembalikan', 'success');
+        }
+      );
+    }
+
+    /* Variabel global menyimpan soal aktif di memori */
+    let allQuestions = loadQuestions();
+
+    /* ================================================================
+       SISTEM NAVIGASI HALAMAN
+       Menggunakan show/hide section, tanpa router kompleks.
+       ================================================================ */
+    let currentPage = 'page-home';
+
+    function navigateTo(pageId) {
+      /* Sembunyikan semua halaman */
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      /* Tampilkan halaman tujuan */
+      const target = document.getElementById(pageId);
+      if (target) {
+        target.classList.add('active');
+        currentPage = pageId;
+        /* Scroll ke atas */
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+      /* Trigger render khusus per halaman */
+      if (pageId === 'page-belajar') renderLettersGrid();
+      if (pageId === 'page-kelola') renderQuestionsList();
+    }
+
+    /* ================================================================
+       HALAMAN BELAJAR - Grid Huruf Hijaiyah
+       ================================================================ */
+    function renderLettersGrid() {
+      const grid = document.getElementById('letters-grid');
+      grid.innerHTML = '';
+      HIJAIYAH_LETTERS.forEach((letter, idx) => {
+        const card = document.createElement('div');
+        card.className = 'letter-card';
+        card.setAttribute('role', 'listitem');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', letter.name);
+        card.style.animationDelay = (idx * 0.03) + 's';
+        card.innerHTML = `
+          <span class="arabic-letter arabic">${letter.arabic}</span>
+          <span class="letter-name">${letter.name}</span>
+        `;
+        card.addEventListener('click', () => showLetterDetail(letter));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            showLetterDetail(letter);
+          }
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    /* ================================================================
+       HALAMAN DETAIL HURUF
+       ================================================================ */
+    function showLetterDetail(letter) {
+      document.getElementById('detail-letter').textContent = letter.arabic;
+      document.getElementById('detail-name').textContent = 'Huruf ' + letter.name;
+      document.getElementById('detail-pron').textContent = 'Pengucapan: ' + letter.pronunciation;
+      navigateTo('page-detail');
+    }
+
+    /* ================================================================
+       SISTEM QUIZ / LATIHAN
+       Mengambil soal random, mengacak pilihan, memvalidasi jawaban.
+       ================================================================ */
+    let currentQuestion = null;   /* Soal yang sedang ditampilkan */
+    let answered = false;         /* Apakah pemain sudah menjawab */
+    let lastQuestionIdx = -1;     /* Indeks soal terakhir (agar tidak berulang) */
+
+    /* Memulai sesi latihan */
+    function startQuiz() {
+      allQuestions = loadQuestions(); /* Refresh data dari localStorage */
+      if (allQuestions.length === 0) {
+        showToast('Belum ada soal. Tambahkan soal terlebih dahulu.', 'error');
+        return;
+      }
+      lastQuestionIdx = -1;
+      navigateTo('page-latihan');
+      loadNewQuestion();
+    }
+
+    /* Memilih soal acak dan menampilkannya */
+    function loadNewQuestion() {
+      answered = false;
+      document.getElementById('feedback-area').style.display = 'none';
+
+      /* Pilih soal acak, hindari soal yang sama berturut-turut */
+      let idx;
+      if (allQuestions.length === 1) {
+        idx = 0;
+      } else {
+        do {
+          idx = Math.floor(Math.random() * allQuestions.length);
+        } while (idx === lastQuestionIdx && allQuestions.length > 1);
+      }
+      lastQuestionIdx = idx;
+      currentQuestion = allQuestions[idx];
+
+      /* Tampilkan pertanyaan */
+      document.getElementById('question-text').textContent = currentQuestion.question;
+
+      /* Badge tingkat kesulitan */
+      const diffEl = document.getElementById('question-difficulty');
+      const diffLabel = currentQuestion.difficulty || 'sedang';
+      diffEl.textContent = diffLabel.charAt(0).toUpperCase() + diffLabel.slice(1);
+      diffEl.className = 'question-difficulty diff-' + diffLabel;
+
+      /* Susun dan acak pilihan jawaban */
+      const allOptions = [
+        { text: currentQuestion.correctAnswer, isCorrect: true },
+        ...currentQuestion.wrongAnswers.map(w => ({ text: w, isCorrect: false }))
+      ];
+      const shuffled = shuffleArray(allOptions);
+
+      /* Render tombol pilihan */
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+      shuffled.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn arabic';
+        btn.textContent = opt.text;
+        btn.setAttribute('aria-label', 'Pilihan: ' + opt.text);
+        btn.dataset.correct = opt.isCorrect ? '1' : '0';
+        btn.addEventListener('click', () => handleAnswer(btn, opt.isCorrect));
+        grid.appendChild(btn);
+      });
+    }
+
+    /* Menangani jawaban pemain */
+    function handleAnswer(btn, isCorrect) {
+      if (answered) return; /* Cegah jawaban ganda */
+      answered = true;
+
+      /* Disable semua tombol */
+      const allBtns = document.querySelectorAll('.option-btn');
+      allBtns.forEach(b => b.classList.add('disabled'));
+
+      const feedbackArea = document.getElementById('feedback-area');
+      const feedbackText = document.getElementById('feedback-text');
+
+      if (isCorrect) {
+        /* Jawaban benar */
+        btn.classList.add('correct');
+        feedbackText.className = 'feedback-text feedback-correct';
+        feedbackText.textContent = 'Benar! 🎉';
+      } else {
+        /* Jawaban salah */
+        btn.classList.add('wrong');
+        feedbackText.className = 'feedback-text feedback-wrong';
+        feedbackText.textContent = 'Belum tepat 😊';
+
+        /* Tandai jawaban yang benar */
+        allBtns.forEach(b => {
+          if (b.dataset.correct === '1') {
+            b.classList.add('reveal');
+          }
+        });
+      }
+
+      /* Tampilkan area feedback dan tombol lanjut */
+      feedbackArea.style.display = 'block';
+      /* Fokus ke tombol lanjut untuk aksesibilitas */
+      setTimeout(() => {
+        document.getElementById('btn-next').focus();
+      }, 100);
+    }
+
+    /* Lanjut ke soal berikutnya */
+    function nextQuestion() {
+      loadNewQuestion();
+    }
+
+    /* ================================================================
+       HALAMAN KELOLA SOAL - Daftar & CRUD
+       ================================================================ */
+
+    /* Membuat chip huruf Arab untuk tampilan daftar soal */
+    function makeChip(text, isCorrect) {
+      const span = document.createElement('span');
+      span.className = 'q-answer-chip arabic' + (isCorrect ? ' is-correct' : '');
+      span.textContent = text;
+      return span;
+    }
+
+    /* Membuat badge kesulitan */
+    function makeBadge(text, type) {
+      const span = document.createElement('span');
+      span.className = 'badge badge-' + type;
+      span.textContent = text;
+      return span;
+    }
+
+    /* Render daftar semua soal */
+    function renderQuestionsList() {
+      const container = document.getElementById('questions-list');
+      container.innerHTML = '';
+
+      if (allQuestions.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>Belum ada soal.</p>
+            <button class="btn btn-primary btn-sm" onclick="openForm()">+ Tambah Soal Pertama</button>
+          </div>
+        `;
+        return;
+      }
+
+      allQuestions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'q-item';
+
+        /* Baris atas: teks soal + nomor */
+        const top = document.createElement('div');
+        top.className = 'q-item-top';
+        const textEl = document.createElement('div');
+        textEl.className = 'q-item-text';
+        textEl.textContent = (idx + 1) + '. ' + q.question;
+        top.appendChild(textEl);
+        item.appendChild(top);
+
+        /* Badge kategori & kesulitan */
+        const badges = document.createElement('div');
+        badges.className = 'q-item-badges';
+        badges.appendChild(makeBadge(q.material || q.category || 'Umum', 'category'));
+        const diff = q.difficulty || 'sedang';
+        badges.appendChild(makeBadge(diff.charAt(0).toUpperCase() + diff.slice(1), diff));
+        item.appendChild(badges);
+
+        /* Chip jawaban */
+        const answers = document.createElement('div');
+        answers.className = 'q-item-answers';
+        answers.appendChild(makeChip(q.correctAnswer, true));
+        (q.wrongAnswers || []).forEach(w => answers.appendChild(makeChip(w, false)));
+        item.appendChild(answers);
+
+        /* Tombol aksi */
+        const actions = document.createElement('div');
+        actions.className = 'q-item-actions';
+
+        const btnEdit = document.createElement('button');
+        btnEdit.className = 'btn btn-outline btn-sm';
+        btnEdit.textContent = 'Edit';
+        btnEdit.addEventListener('click', () => openForm(q));
+
+        const btnDel = document.createElement('button');
+        btnDel.className = 'btn btn-danger-outline btn-sm';
+        btnDel.textContent = 'Hapus';
+        btnDel.addEventListener('click', () => deleteQuestion(q.id));
+
+        actions.appendChild(btnEdit);
+        actions.appendChild(btnDel);
+        item.appendChild(actions);
+
+        container.appendChild(item);
+      });
+    }
+
+    /* Menghapus soal berdasarkan ID */
+    function deleteQuestion(id) {
+      showConfirmModal(
+        'Yakin ingin menghapus soal ini? Tindakan ini tidak bisa dibatalkan.',
+        'Hapus',
+        function () {
+          allQuestions = allQuestions.filter(q => q.id !== id);
+          saveQuestions(allQuestions);
+          renderQuestionsList();
+          showToast('Soal berhasil dihapus', 'success');
+        }
+      );
+    }
+
+    /* ================================================================
+       FORM SOAL - Tambah & Edit
+       ================================================================ */
+    let editingQuestionId = null; /* null = tambah baru, string = edit */
+
+    /* Membuka form kosong (tambah) atau terisi (edit) */
+    function openForm(question) {
+      clearFormErrors();
+
+      if (question) {
+        /* Mode edit */
+        editingQuestionId = question.id;
+        document.getElementById('form-title').textContent = 'Edit Soal';
+        document.getElementById('f-question').value = question.question || '';
+        document.getElementById('f-correct').value = question.correctAnswer || '';
+        document.getElementById('f-wrong1').value = (question.wrongAnswers && question.wrongAnswers[0]) || '';
+        document.getElementById('f-wrong2').value = (question.wrongAnswers && question.wrongAnswers[1]) || '';
+        document.getElementById('f-wrong3').value = (question.wrongAnswers && question.wrongAnswers[2]) || '';
+        document.getElementById('f-category').value = question.material || question.category || '';
+        document.getElementById('f-difficulty').value = question.difficulty || '';
+      } else {
+        /* Mode tambah */
+        editingQuestionId = null;
+        document.getElementById('form-title').textContent = 'Tambah Soal Baru';
+        document.getElementById('f-question').value = '';
+        document.getElementById('f-correct').value = '';
+        document.getElementById('f-wrong1').value = '';
+        document.getElementById('f-wrong2').value = '';
+        document.getElementById('f-wrong3').value = '';
+        document.getElementById('f-category').value = 'Huruf Hijaiyah';
+        document.getElementById('f-difficulty').value = 'sedang';
+      }
+
+      navigateTo('page-form');
+    }
+
+    /* Validasi dan simpan form */
+    function saveForm() {
+      clearFormErrors();
+      let hasError = false;
+
+      const question = document.getElementById('f-question').value.trim();
+      const correct = document.getElementById('f-correct').value.trim();
+      const wrong1 = document.getElementById('f-wrong1').value.trim();
+      const wrong2 = document.getElementById('f-wrong2').value.trim();
+      const wrong3 = document.getElementById('f-wrong3').value.trim();
+      const category = document.getElementById('f-category').value.trim();
+      const difficulty = document.getElementById('f-difficulty').value;
+
+      /* Validasi setiap field */
+      if (!question) { showFieldError('f-question', 'err-question', 'Pertanyaan wajib diisi'); hasError = true; }
+      if (!correct)  { showFieldError('f-correct', 'err-correct', 'Jawaban benar wajib diisi'); hasError = true; }
+      if (!wrong1)   { showFieldError('f-wrong1', 'err-wrong1', 'Jawaban salah 1 wajib diisi'); hasError = true; }
+      if (!wrong2)   { showFieldError('f-wrong2', 'err-wrong2', 'Jawaban salah 2 wajib diisi'); hasError = true; }
+      if (!wrong3)   { showFieldError('f-wrong3', 'err-wrong3', 'Jawaban salah 3 wajib diisi'); hasError = true; }
+      if (!category) { showFieldError('f-category', 'err-category', 'Kategori wajib diisi'); hasError = true; }
+      if (!difficulty){ showFieldError('f-difficulty', 'err-difficulty', 'Pilih tingkat kesulitan'); hasError = true; }
+
+      /* Validasi: jawaban tidak boleh duplikat */
+      if (!hasError) {
+        const allAnswers = [correct, wrong1, wrong2, wrong3];
+        const unique = new Set(allAnswers);
+        if (unique.size < 4) {
+          showToast('Semua jawaban harus berbeda satu sama lain', 'error');
+          hasError = true;
+        }
+      }
+
+      if (hasError) return;
+
+      /* Susun objek soal */
+      const newQuestion = {
+        id: editingQuestionId || generateId(),
+        type: 'recognize-letter',
+        category: 'huruf-hijaiyah',
+        question: question,
+        correctAnswer: correct,
+        wrongAnswers: [wrong1, wrong2, wrong3],
+        difficulty: difficulty,
+        material: category,
+      };
+
+      if (editingQuestionId) {
+        /* Edit soal yang sudah ada */
+        const idx = allQuestions.findIndex(q => q.id === editingQuestionId);
+        if (idx !== -1) {
+          allQuestions[idx] = newQuestion;
+        }
+        showToast('Soal berhasil diperbarui', 'success');
+      } else {
+        /* Tambah soal baru */
+        allQuestions.push(newQuestion);
+        showToast('Soal berhasil ditambahkan', 'success');
+      }
+
+      saveQuestions(allQuestions);
+      navigateTo('page-kelola');
+    }
+
+    /* Menampilkan error pada field tertentu */
+    function showFieldError(inputId, errorId, message) {
+      document.getElementById(inputId).classList.add('input-error');
+      const errEl = document.getElementById(errorId);
+      errEl.textContent = message;
+      errEl.classList.add('show');
+    }
+
+    /* Menghapus semua error pada form */
+    function clearFormErrors() {
+      document.querySelectorAll('.form-input, .form-select').forEach(el => el.classList.remove('input-error'));
+      document.querySelectorAll('.form-error').forEach(el => {
+        el.textContent = '';
+        el.classList.remove('show');
+      });
+    }
+
+    /* ================================================================
+       MODAL KONFIRMASI
+       Digunakan untuk konfirmasi hapus & reset soal bawaan.
+       ================================================================ */
+    let modalCallback = null;
+
+    function showConfirmModal(message, confirmText, onConfirm) {
+      document.getElementById('modal-message').textContent = message;
+      const btn = document.getElementById('modal-confirm-btn');
+      btn.textContent = confirmText || 'OK';
+      modalCallback = onConfirm;
+      document.getElementById('modal-overlay').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('show');
+      modalCallback = null;
+    }
+
+    function confirmModal() {
+      if (typeof modalCallback === 'function') {
+        modalCallback();
+      }
+      closeModal();
+    }
+
+    /* Tutup modal jika klik di luar */
+    document.getElementById('modal-overlay').addEventListener('click', function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    /* ================================================================
+       TOAST NOTIFICATION
+       Pesan singkat yang muncul di bawah layar.
+       ================================================================ */
+    let toastTimeout = null;
+
+    function showToast(message, type) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast';
+
+      if (type === 'success') toast.classList.add('toast-success');
+      if (type === 'error') toast.classList.add('toast-error');
+
+      /* Trigger reflow untuk restart animasi */
+      void toast.offsetWidth;
+      toast.classList.add('show');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    /* ================================================================
+       INISIALISASI APLIKASI
+       ================================================================ */
+    (function init() {
+      /* Pastikan soal bawaan tersedia */
+      allQuestions = loadQuestions();
+
+      /* Set halaman awal */
+      navigateTo('page-home');
+    })();
+  </script>
+</body>
+</html>
